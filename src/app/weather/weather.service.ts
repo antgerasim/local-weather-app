@@ -11,9 +11,38 @@ import { map } from 'rxjs/operators'
 })
 export class WeatherService {
   constructor(private httpClient: HttpClient) {}
-
+  //Update getCurrentWeather
+  //1.define return type to be observable<ICurrentWeatherData>
+  //2. write helperfunctions
+  //3. Update ICurrentWeather.date to the number type
+  //4. Apply the map function to data stream returned by  httpClient.get method through a //pipe
+  //5. Pass the data object into the transformToICurrentWeather function:
 
   getCurrentWeather(city: string, country: string): Observable<ICurrentWeather> {
+    return this.httpClient
+      .get<ICurrentWeatherData>(
+        `${environment.baseUrl}api.openweather-map.org/data/2.5/weather?` +
+          `q=${city},${country}&appid=${environment.appId}`
+      )
+      .pipe(map(data => this.transformToICurrentWeather(data)))
+  }
+
+  private transformToICurrentWeather(data: ICurrentWeatherData): ICurrentWeather {
+    return {
+      city: data.name,
+      country: data.sys.country,
+      date: data.dt * 1000,
+      image: `http://openweathermap.org/img/w/${data.weather[0].icon}.png`,
+      temperature: this.convertKelvinToFahrenheit(data.main.temp),
+      description: data.weather[0].description,
+    }
+  }
+
+  private convertKelvinToFahrenheit(kelvin: number): number {
+    return (kelvin * 9) / 5 - 459.67
+  }
+
+  /*   getCurrentWeather(city: string, country: string): Observable<ICurrentWeather> {
     return this.httpClient.get<ICurrentWeatherData>(
         `${environment.baseUrl}api.openweathermap.org/data/2.5/weather?` +
           `q=${city},${country}&appid=${environment.appId}`
@@ -42,4 +71,5 @@ export class WeatherService {
   private convertKelvinToFahrenheit(kelvin: number): number {
     return (kelvin * 9) / 5 - 459.67
   }
+ */
 }
