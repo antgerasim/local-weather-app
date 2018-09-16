@@ -12,3 +12,5 @@ import { WeatherService } from './weather/weather.service'
   bootstrap: [AppComponent],
 })
 export class AppModule {}
+
+//weiter mit 27% Right-clicking on a Docker image brings up a context menu to run various operations on it, like run, push and tag
