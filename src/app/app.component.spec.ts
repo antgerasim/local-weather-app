@@ -1,9 +1,15 @@
+import { WeatherService } from './weather/weather.service'
 import { TestBed, async } from '@angular/core/testing'
 import { AppComponent } from './app.component'
+import { CurrentWeatherComponent } from './current-weather/current-weather.component'
+import { HttpClientModule } from '@angular/common/http'
+
 describe('AppComponent', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [AppComponent],
+      imports: [HttpClientModule],
+      declarations: [AppComponent, CurrentWeatherComponent],
+      providers: [WeatherService],
     }).compileComponents()
   }))
   it('should create the app', async(() => {
@@ -21,7 +27,8 @@ describe('AppComponent', () => {
     fixture.detectChanges()
     const compiled = fixture.debugElement.nativeElement
     expect(compiled.querySelector('h1').textContent).toContain(
-      'Welcome to local-weather-app!'
+      //'Welcome to local-weather-app!'
+      'LocalCast Weather'
     )
   }))
 })

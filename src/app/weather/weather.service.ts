@@ -1,15 +1,18 @@
+//import { IWeatherService } from './weather.service'
 import { Injectable } from '@angular/core'
 import { HttpClient } from '@angular/common/http'
 import { environment } from '../../environments/environment'
-// import { ICurrentWeatherData } from './ICurrentWeatherData'
+
 import { ICurrentWeather } from '../interfaces'
 import { Observable } from 'rxjs'
 import { map } from 'rxjs/operators'
+import { ICurrentWeatherData } from './ICurrentWeatherData'
+//import {do} from 'rxjs/operators'
 
 @Injectable({
   providedIn: 'root',
 })
-export class WeatherService {
+export class WeatherService implements IWeatherService {
   constructor(private httpClient: HttpClient) {}
   //Update getCurrentWeather
   //1.define return type to be observable<ICurrentWeatherData>
@@ -19,12 +22,15 @@ export class WeatherService {
   //5. Pass the data object into the transformToICurrentWeather function:
 
   getCurrentWeather(city: string, country: string): Observable<ICurrentWeather> {
-    return this.httpClient
-      .get<ICurrentWeatherData>(
-        `${environment.baseUrl}api.openweather-map.org/data/2.5/weather?` +
-          `q=${city},${country}&appid=${environment.appId}`
-      )
-      .pipe(map(data => this.transformToICurrentWeather(data)))
+    return (
+      this.httpClient
+        .get<ICurrentWeatherData>(
+          `${environment.baseUrl}api.openweathermap.org/data/2.5/weather?` +
+            `q=${city},${country}&appid=${environment.appId}`
+        )
+        //.do(data => console.log('HTTP response:', data))
+        .pipe(map(data => this.transformToICurrentWeather(data)))
+    )
   }
 
   private transformToICurrentWeather(data: ICurrentWeatherData): ICurrentWeather {
@@ -41,7 +47,6 @@ export class WeatherService {
   private convertKelvinToFahrenheit(kelvin: number): number {
     return (kelvin * 9) / 5 - 459.67
   }
-
   /*   getCurrentWeather(city: string, country: string): Observable<ICurrentWeather> {
     return this.httpClient.get<ICurrentWeatherData>(
         `${environment.baseUrl}api.openweathermap.org/data/2.5/weather?` +
@@ -72,4 +77,7 @@ export class WeatherService {
     return (kelvin * 9) / 5 - 459.67
   }
  */
+}
+export interface IWeatherService {
+  getCurrentWeather(city: string, country: string): Observable<ICurrentWeather>
 }

@@ -1,4 +1,4 @@
-interface ICurrentWeatherData {
+export interface ICurrentWeatherData {
   weather: [
     {
       description: string
