@@ -11,6 +11,5 @@ describe('workspace-project App', () => {
     page.navigateTo()
     //expect(page.getParagraphText()).toEqual('Welcome to local-weather-app!')
     expect(page.getParagraphText()).toEqual('LocalCast Weather')
-
   })
 })

@@ -39,6 +39,7 @@ export class WeatherService implements IWeatherService {
       country: data.sys.country,
       date: data.dt * 1000,
       image: `http://openweathermap.org/img/w/${data.weather[0].icon}.png`,
+      //image: `http://openweathermap.org/img/w/50d.png`, hard code check
       temperature: this.convertKelvinToFahrenheit(data.main.temp),
       description: data.weather[0].description,
     }
