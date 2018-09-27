@@ -25,3 +25,9 @@ Run `ng e2e` to execute the end-to-end tests via [Protractor](http://www.protrac
 ## Further help
 
 To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI README](https://github.com/angular/angular-cli/blob/master/README.md).
+
+npx "path must be a string" ERROR - Fix https://github.com/zkat/npx/issues/144
+-> Instead of only deleting "C:\Program Files\nodejs" from system variables ("path" variable), I also added it to user variables ("path" variable), but after "%AppData%\npm".
+
+
+https://mockflow.com/ as an easy-to-use, capable, and online tool that supports Material design UI elements!

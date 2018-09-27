@@ -12,10 +12,24 @@ export class CurrentWeatherComponent implements OnInit {
 
   constructor(private weatherService: WeatherService) {}
 
+  // Attribution: https://stackoverflow.com/a/44418732/178620
+  //https://github.com/duluca/local-weather-app/blob/master/src/app/current-weather/current-weather.component.ts
+  getOrdinal(date: number) {
+    const n = new Date(date).getDate()
+    return n > 0
+      ? ['th', 'st', 'nd', 'rd'][(n > 3 && n < 21) || n % 10 > 3 ? 0 : n % 10]
+      : ''
+  }
+
   ngOnInit() {
     this.weatherService
       .getCurrentWeather('Bethesda', 'US')
       .subscribe(data => (this.current = data))
-    //console.log(this.current)
   }
+
+  /*   ngOnInit() {
+    this.weatherService
+      .getJSON()
+      .subscribe(data => (this.current = data))
+  } */
 }

@@ -1,0 +1,21 @@
+@import '~@angular/material/theming';
+@include mat-core(); //The mix-in that generates Material’s core styles is called mat-core
+
+/* The interface for mat-palette looks like this:
+mat-palette($base-palette, $default: 500, $lighter: 100, $darker: 700) */
+
+//Define the primary and secondary mat-palette objects using the default hue from the tool:
+$localcast-primary: mat-palette($mat-red, 500);
+$localcast-accent: mat-palette($mat-indigo, A400);
+
+//Create a new theme and apply it:
+$localcast-app-theme: mat-light-theme($localcast-primary, $localcast-accent);
+@include angular-material-theme($localcast-app-theme);
+
+
+
+//https://material.angular.io/guide/theming
+//https://material.io/design/color/#color-theme-creation
+//https://material.io/design/material-studies/rally.html#product-architecture
+
+//http://mcg.mbitson.com.

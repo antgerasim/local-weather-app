@@ -13,7 +13,11 @@ import { ICurrentWeatherData } from './ICurrentWeatherData'
   providedIn: 'root',
 })
 export class WeatherService implements IWeatherService {
-  constructor(private httpClient: HttpClient) {}
+  constructor(private httpClient: HttpClient) {
+    /*     this.getJSON().subscribe(data => {
+      console.log(data)
+    }) */
+  }
   //Update getCurrentWeather
   //1.define return type to be observable<ICurrentWeatherData>
   //2. write helperfunctions
@@ -31,6 +35,13 @@ export class WeatherService implements IWeatherService {
         //.do(data => console.log('HTTP response:', data))
         .pipe(map(data => this.transformToICurrentWeather(data)))
     )
+  }
+
+  getJSON(): Observable<ICurrentWeather> {
+    //const data: any  = require('app/weather/apiresponse.json') C:\Dev\local-weather-app\src\app\weather\apiresponse.json
+    return this.httpClient
+      .get<ICurrentWeatherData>('src/data/apiresponse.json') // 404 error - must be configured in angular.json 'assets'
+      .pipe(map(data => this.transformToICurrentWeather(data)))
   }
 
   private transformToICurrentWeather(data: ICurrentWeatherData): ICurrentWeather {
