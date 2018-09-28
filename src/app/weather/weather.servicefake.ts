@@ -12,6 +12,9 @@ export class WeatherServiceFake implements IWeatherService {
     description: 'light intensity drizzle',
   }
 
+  getCurrentWeatherByCoords(coords: Coordinates): Observable<ICurrentWeather> {
+    return of(this.fakeWeather) // of turns fakeweather into observable
+  }
   getCurrentWeather(city: string, country: string): Observable<ICurrentWeather> {
     //throw new Error('Method not implemented.')
     return of(this.fakeWeather) // of turns fakeweather into observable

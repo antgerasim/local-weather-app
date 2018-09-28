@@ -31,3 +31,5 @@ npx "path must be a string" ERROR - Fix https://github.com/zkat/npx/issues/144
 
 
 https://mockflow.com/ as an easy-to-use, capable, and online tool that supports Material design UI elements!
+
+npm info {packagename} - shows availible packages with version info etc
