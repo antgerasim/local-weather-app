@@ -4,15 +4,25 @@ import { HttpClient } from '@angular/common/http'
 import { environment } from '../../environments/environment'
 
 import { ICurrentWeather } from '../interfaces'
-import { Observable } from 'rxjs'
+import { Observable, BehaviorSubject } from 'rxjs'
 import { map } from 'rxjs/operators'
 import { ICurrentWeatherData } from './ICurrentWeatherData'
+
 //import {do} from 'rxjs/operators'
 
 @Injectable({
   providedIn: 'root',
 })
 export class WeatherService implements IWeatherService {
+  currentWeather = new BehaviorSubject<ICurrentWeather>({
+    city: '--',
+    country: '--',
+    date: Date.now(),
+    image: '',
+    temperature: 0,
+    description: '',
+  })
+
   constructor(private httpClient: HttpClient) {
     /*     this.getJSON().subscribe(data => {
       console.log(data)

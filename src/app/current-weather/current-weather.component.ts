@@ -22,9 +22,10 @@ export class CurrentWeatherComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.weatherService
+    /*     this.weatherService
       .getCurrentWeather('Bethesda', 'US')
-      .subscribe(data => (this.current = data))
+      .subscribe(data => (this.current = data)) */
+    this.weatherService.currentWeather.subscribe(data => (this.current = data))
   }
 
   /*   ngOnInit() {
