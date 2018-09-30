@@ -10,6 +10,8 @@ import { WeatherService } from '../weather/weather.service'
 export class CurrentWeatherComponent implements OnInit {
   current: ICurrentWeather
   errorMessage: any
+  geolocationPosition: any
+  // coords: Coordinates
 
   constructor(private weatherService: WeatherService) {
     this.current = {
@@ -33,41 +35,95 @@ export class CurrentWeatherComponent implements OnInit {
 
   ngOnInit() {
     //debugger
-    //get last choosen city from browser localstorage
-    const oldLocation = JSON.parse(localStorage.getItem('lastCity')) || []
-    console.log('oldLocation', oldLocation)
-    //if user is first time, get default city
-    if (oldLocation.length === 0) {
-      this.weatherService
-        .getCurrentWeather('Bethesda', 'US')
-        .subscribe(data => (this.current = data))
-    } else {
-      //set oldCity as current
-      this.current.city = oldLocation.city
-      this.current.country = oldLocation.country
-      this.current.date = oldLocation.date
-      this.current.image = oldLocation.image
-      this.current.temperature = oldLocation.temperature
-      this.current.description = oldLocation.description
+    if (window.navigator && window.navigator.geolocation) {
+      window.navigator.geolocation.getCurrentPosition(
+        position => {
+          console.log(position)
+          //if no geolocation, get last choosen city from browser localstorage
+          if (this.isObjectEmpty(position)) {
+            const oldLocation = this.getLocalStorageItem('lastCity');
+            console.log('oldLocation', oldLocation)
+            //if user is first time, get geolocation data
+            if (oldLocation.length === 0) {
+              //if user refues to give his location data, set default
+              this.weatherService
+                .getCurrentWeather('Bethesda', 'US')
+                .subscribe(data => (this.current = data))
+
+            } else {
+              //set oldCity as current
+              this.current.city = oldLocation.city
+              this.current.country = oldLocation.country
+              this.current.date = oldLocation.date
+              this.current.image = oldLocation.image
+              this.current.temperature = oldLocation.temperature
+              this.current.description = oldLocation.description
+            }
+          } else { //we have location
+            const localCoords: Coordinates = {
+              latitude: position.coords.latitude,
+              longitude: position.coords.longitude,
+              accuracy: 0,
+              altitude: 0,
+              altitudeAccuracy: 0,
+              heading: 0,
+              speed: 0
+            }
+
+            this.weatherService
+              .getCurrentWeatherByCoords(localCoords)
+              .subscribe(data => {
+                this.setLocalStorageItem('lastCity', data)
+                this.current = data
+              })
+            //set currentPosition as current
+          }
+        },
+        error => {
+          switch (error.code) {
+            case 1:
+              console.log('Permission Denied');
+              break
+            case 2:
+              console.log('Position Unavailable');
+              break;
+            case 3:
+              console.log('Timeout');
+              break;
+          }
+        }
+      )
     }
 
     this.weatherService.currentWeather
-      //.do(data => console.log(data))
       .subscribe(data => {
+        //debugger
+        console.log('data', data)
         if (data.city !== '--') {
           this.current = data
-          console.log('data', data)
-          localStorage.setItem('lastCity', JSON.stringify(data))
+
+          this.setLocalStorageItem('lastCity', data)
         }
       }),
       // tslint:disable-next-line:no-unused-expression
       error => {
         this.errorMessage = error
       }
-    //if no input, take fakedata, otherwise subscribe to input
-    /*       this.weatherService
-          .getJSON()
-          .subscribe(data => (this.current = data)) */
+  }
 
+  isObjectEmpty(obj) {
+    return Object.keys(obj).length === 0 && obj.constructor === Object
+  }
+
+  getLocalStorageItem(itemName: string) {
+    return JSON.parse(localStorage.getItem(itemName)) || []
+  }
+
+  setLocalStorageItem(itemName: string, itemArray: any) {
+    localStorage.setItem(itemName, JSON.stringify(itemArray));
   }
 }
+
+
+
+

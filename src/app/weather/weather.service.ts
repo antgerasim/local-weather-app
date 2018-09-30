@@ -58,6 +58,13 @@ export class WeatherService implements IWeatherService {
     return this.getCurrentWeatherHelper(uriParams)
   }
 
+  updateCurrentWeather(search: string | number, country?: string) {
+    this.getCurrentWeather(search, country).subscribe(weather =>
+      this.currentWeather.next(weather)
+    )
+}
+  
+
   private getCurrentWeatherHelper(uriParams: string): Observable<ICurrentWeather> {
     return (
       this.httpClient

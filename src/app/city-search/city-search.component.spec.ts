@@ -12,7 +12,15 @@ describe('CitySearchComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      imports: [MatIconModule, MatInputModule, FormsModule, ReactiveFormsModule, MatFormFieldModule, HttpClientModule, BrowserAnimationsModule],
+      imports: [
+        MatIconModule,
+        MatInputModule,
+        FormsModule,
+        ReactiveFormsModule,
+        MatFormFieldModule,
+        HttpClientModule,
+        BrowserAnimationsModule,
+      ],
       declarations: [CitySearchComponent],
       providers: [WeatherService],
     }).compileComponents()
