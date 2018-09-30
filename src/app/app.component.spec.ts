@@ -3,12 +3,17 @@ import { TestBed, async } from '@angular/core/testing'
 import { AppComponent } from './app.component'
 import { CurrentWeatherComponent } from './current-weather/current-weather.component'
 import { HttpClientModule } from '@angular/common/http'
+import { MatToolbarModule, MatCardModule, MatIconModule, MatInputModule } from '@angular/material'
+import { CitySearchComponent } from './city-search/city-search.component'
+import { FormsModule, ReactiveFormsModule } from '@angular/forms'
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations'
+
 
 describe('AppComponent', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      imports: [HttpClientModule],
-      declarations: [AppComponent, CurrentWeatherComponent],
+      imports: [HttpClientModule, MatToolbarModule, MatCardModule, MatIconModule, FormsModule, ReactiveFormsModule, MatInputModule, BrowserAnimationsModule],
+      declarations: [AppComponent, CurrentWeatherComponent, CitySearchComponent],
       providers: [WeatherService],
     }).compileComponents()
   }))
